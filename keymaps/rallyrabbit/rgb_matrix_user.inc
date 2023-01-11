@@ -26,7 +26,7 @@ RGB_MATRIX_EFFECT(BAND_SAT_DEEP_RIVER_REVERSE)
 /*
  * Blooming Flower was taken from HorrorTroll
  */
-#include "flower_blooming/flower_blooming.h"
+#include "flower_blooming.h"
 
 static HSV FLOWER_BLOOMING_math(HSV hsv, uint8_t i, uint8_t time) {
     if (g_led_config.point[i].y > k_rgb_matrix_center.y)
