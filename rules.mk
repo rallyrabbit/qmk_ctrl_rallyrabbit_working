@@ -28,8 +28,5 @@ AUTO_SHIFT_ENABLE = no      # Auto Shift
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = custom
 
-# Allow Unicode for RallyRabbit Keymap
-UNICODE_ENABLE = yes        # Enable Unicode Characters/Strings
-
-# Custom RGB for RallyRabbit Keymap
+#Custom RGB
 RGB_MATRIX_CUSTOM_USER = yes
