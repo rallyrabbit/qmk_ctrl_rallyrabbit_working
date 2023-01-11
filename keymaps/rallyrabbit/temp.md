@@ -30,10 +30,10 @@ Follow the QMK directions isntalling QMK MSYS.
 
 ### Typing Layer
 
-![Typing Layer](https://user-images.githubusercontent.com/90145104/211661741-6736c4fd-56a2-4dd4-bd81-57c42cc8ab13.png)
+![Typing Layer](https://imgur.com/9oORY9m)
 
 ### "Other" Layer
 
-![Function Layer](https://user-images.githubusercontent.com/90145104/211661742-84ce600c-9921-40ce-ab56-cfd6b733b557.png)
+![Function Layer](https://imgur.com/DVn1ilN)
 
 
