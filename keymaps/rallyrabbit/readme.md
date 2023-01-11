@@ -23,7 +23,8 @@ Additionally this changes much of the RGB setup.
 
 Follow the QMK directions isntalling QMK MSYS.
 * Download the QMK firmware (this repository)
-* Copy config.h and rules.mk to the keyboards/massdrop/ctrl directory
+* config.h in the current directory is used to add to the massdrop/ctrl/config.h or remove things added in that file as it is included after that file.
+* rules.mk is used in addition to the massdrop/ctrl/rules.mk and is used to add to or turn off items in the standard rules.mk file
 * Build with "qmk compile -kb massdrop/ctrl -km rallyrabbit"
 
 ## Layers
