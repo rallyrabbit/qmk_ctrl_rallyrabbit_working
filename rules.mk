@@ -27,6 +27,9 @@ AUTO_SHIFT_ENABLE = no      # Auto Shift
 # Custom RGB matrix handling
 RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_DRIVER = custom
+<<<<<<< Updated upstream
 
 #Custom RGB
 RGB_MATRIX_CUSTOM_USER = yes
+=======
+>>>>>>> Stashed changes
