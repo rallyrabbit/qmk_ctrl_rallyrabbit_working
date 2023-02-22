@@ -75,6 +75,7 @@ void led_set_user(uint8_t usb_led) {
     }
 }
 
+#if USE_WINDOWS_ALT_CODES
 void send_windows_altcode_sequence(uint16_t altcode, uint8_t shift_mask, keyrecord_t *record) {
     /* Sends the "alt code" defined in altcode parameter.
        Clears Shifts
@@ -198,6 +199,7 @@ void send_windows_altcode_sequence(uint16_t altcode, uint8_t shift_mask, keyreco
         send_keyboard_report();
     }
 }
+#endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static uint32_t key_timer;
