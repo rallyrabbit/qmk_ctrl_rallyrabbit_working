@@ -14,7 +14,7 @@
 // For Spanish Keycode Functions
 //#define USE_UNICODE_ALT_LETTERS
 #define USE_WINDOWS_ALT_CODES
-#define USE_MAC_ALT_CODES
+#define USE_MACOS_ALT_CODES
 
 // RGB Matrix Animation modes. Explicitly disabled from the normal
 // Massdrop Ctrl Configuration (massdrop/ctrl/config.h override)

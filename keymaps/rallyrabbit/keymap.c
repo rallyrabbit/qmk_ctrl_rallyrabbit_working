@@ -5,6 +5,15 @@
 
 #include QMK_KEYBOARD_H
 
+#include QMK_KEYBOARD_H
+
+enum ctrl_rallyrabbit_layers
+{
+  _WINDOWS,
+  _MACOS,
+  _FUNCTION
+};
+
 enum ctrl_keycodes {
     U_T_AUTO = SAFE_RANGE, /* USB Extra Port Toggle Auto Detect / Always Active */
     U_T_AGCR,              /* USB Toggle Automatic GCR control */
@@ -20,27 +29,41 @@ enum ctrl_keycodes {
     KC_U_AC,               /* U with acute accent */
     KC_NT_C,               /* N with tilda */
     KC_AE_C,               /* AE character */
-    KC_SLEEP,              /* Mac Sleep Key */
+    KC_SLEEP,              /* Sleep Key */
     KC_WIN,                /* Set to Windows Keyboard */
-    KC_MAC                 /* Set to Mac Keyboard */
+    KC_MAC                 /* Set to Macos Keyboard */
 };
 
+/* Special key codes for layer changes */
+#define SC_WIN DF(_WINDOWS)
+#define SC_MAC DF(_MACOS)
+#define SC_FUNC MO(_FUNCTION)
+
+//KC_F1
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT(
-        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,             KC_PSCR, KC_SCRL, KC_PAUS,
-        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,   KC_INS,  KC_HOME, KC_PGUP,
-        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,   KC_DEL,  KC_END,  KC_PGDN,
+    [_WINDOWS] = LAYOUT(
+        KC_ESC,  MD_BOOT,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                     KC_PSCR, KC_SCRL, KC_PAUS,
+        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,           KC_INS,  KC_HOME, KC_PGUP,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,           KC_DEL,  KC_END,  KC_PGDN,
         KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,
-        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                              KC_UP,
-        KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                             KC_RALT, MO(1),   KC_APP,  KC_RCTL,            KC_LEFT, KC_DOWN, KC_RGHT
+        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                                      KC_UP,
+        KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                             KC_RALT, SC_FUNC, KC_APP,  KC_RCTL,                     KC_LEFT, KC_DOWN, KC_RGHT
     ),
-    [1] = LAYOUT(
-        KC_SLEEP, MD_BOOT, NK_TOGG, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,            KC_MUTE, _______, _______,
-        KC_NUM,  KC_KP_1, KC_KP_2, KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, _______, _______, _______,   KC_MPLY, KC_MSTP, KC_VOLU,
-        _______, _______, KC_WIN,  KC_E_AC, RGB_SPI, RGB_VAI, RGB_SAI, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,   KC_MPRV, KC_MNXT, KC_VOLD,
-        _______, KC_A_AC, KC_AE_C, _______, RGB_SPD, RGB_VAD, RGB_SAD, _______, _______, _______, _______, _______, KC_ENT,
-        KC_LSFT, RGB_TOG, _______, _______, _______, _______, KC_NT_C, KC_MAC,  _______, _______, _______, KC_RSFT,                              RGB_HUI,
-        _______, _______, _______,                   _______,                            _______, _______, _______, _______,           RGB_RMOD, RGB_HUD, RGB_MOD
+    [_MACOS] = LAYOUT(
+        KC_ESC,  MD_BOOT,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                     KC_PSCR, KC_SCRL, KC_PAUS,
+        KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,           KC_INS,  KC_HOME, KC_PGUP,
+        KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,           KC_DEL,  KC_END,  KC_PGDN,
+        KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,
+        KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                                      KC_UP,
+        KC_LCTL, KC_LALT, KC_LGUI,                   KC_SPC,                             KC_RGUI, SC_FUNC, KC_LALT, KC_RCTL,                     KC_LEFT, KC_DOWN, KC_RGHT
+    ),
+    [_FUNCTION] = LAYOUT(
+        KC_SLEEP, MD_BOOT, _______, _______, _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                   KC_MUTE, _______, _______,
+        KC_NUM,  KC_KP_1, KC_KP_2, KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, KC_KP_MINUS, KC_KP_PLUS, _______,   _______, KC_BRIU, KC_VOLU,
+        _______, _______, KC_WIN,  KC_E_AC, _______, _______, _______, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,          _______, KC_BRID, KC_VOLD,
+        _______, KC_A_AC, KC_AE_C, RGB_SPI, RGB_VAI, RGB_SAI, _______, _______, _______, _______, _______, _______, KC_ENT,
+        KC_LSFT, RGB_TOG, _______, RGB_SPD, RGB_VAD, RGB_SAD, KC_NT_C, KC_MAC,  _______, _______, _______, KC_RSFT,                                      RGB_HUI,
+        _______, _______, _______,                   _______,                            _______, _______, _______, _______,                   RGB_RMOD, RGB_HUD, RGB_MOD
     ),
     /*
     [X] = LAYOUT(
@@ -72,14 +95,13 @@ void led_set_user(uint8_t usb_led)
     g_bOsCapsLockOn = IS_LED_ON(usb_led, USB_LED_CAPS_LOCK);
 }
 
-#if defined(USE_MAC_ALT_CODES)
-void send_mac_altcode_sequence(uint16_t keycode, uint8_t shift_mask, keyrecord_t *record)
+#if defined(USE_MACOS_ALT_CODES)
+void send_macos_altcode_sequence(uint16_t keyCode, uint16_t overrideKeycode, uint8_t shiftMask, keyrecord_t *record)
 {
     /* Sends the "alt code" defined in altcode parameter.
        Clears Shifts
        Clears caps lock
-       Sends character
-       Sends ALT+E
+       Sends required character sequence
        Restores caps lock
     */
 
@@ -99,29 +121,29 @@ void send_mac_altcode_sequence(uint16_t keycode, uint8_t shift_mask, keyrecord_t
     }
 
     /* Send the Alt Code */
-    switch(keycode)
+    switch(keyCode)
     {
-        case KC_A:
-        case KC_E:
-        case KC_I:
-        case KC_O:
-        case KC_U:
-            /* Send ALT + E */
+        case KC_A_AC:
+        case KC_E_AC:
+        case KC_I_AC:
+        case KC_O_AC:
+        case KC_U_AC:
+            /* Send ALT + A/E/I/O/U */
             tap_code16(LALT(KC_E));
 
             /* Send key code */
-            tap_code16(keycode);
+            tap_code16(overrideKeycode);
             break;
 
-        case KC_N:
+        case KC_NT_C:
             /* Send ALT + N */
             tap_code16(LALT(KC_N));
 
             /* Send key code */
-            tap_code16(keycode);
+            tap_code16(overrideKeycode);
             break;
 
-        case KC_QUOT:
+        case KC_AE_C:
             /* Send ALT + ' */
             tap_code16(LALT(KC_QUOT));
             break;
@@ -137,14 +159,14 @@ void send_mac_altcode_sequence(uint16_t keycode, uint8_t shift_mask, keyrecord_t
     }
 
     /* Restore Left Shift to Previous State */
-    if (shift_mask & MOD_BIT(KC_LSFT))
+    if (shiftMask & MOD_BIT(KC_LSFT))
     {
         register_code(KC_LSFT);
         send_keyboard_report();
     }
 
     /* Restore Right Shift to Previous State */
-    if (shift_mask & MOD_BIT(KC_RSFT))
+    if (shiftMask & MOD_BIT(KC_RSFT))
     {
         register_code(KC_RSFT);
         send_keyboard_report();
@@ -153,9 +175,9 @@ void send_mac_altcode_sequence(uint16_t keycode, uint8_t shift_mask, keyrecord_t
 #endif
 
 #if defined(USE_WINDOWS_ALT_CODES)
-void send_windows_altcode_sequence(uint16_t altcode, uint8_t shift_mask, keyrecord_t *record)
+void send_windows_altcode_sequence(uint16_t altCode, uint8_t shiftMask, keyrecord_t *record)
 {
-    /* Sends the "alt code" defined in altcode parameter.
+    /* Sends the "alt code" defined in altCode parameter.
        Clears Shifts
        Sets Num Lock
        Presses Left Alt
@@ -181,57 +203,57 @@ void send_windows_altcode_sequence(uint16_t altcode, uint8_t shift_mask, keyreco
     /* Save the Num Lock state prior to sending windows Num Lock with key codes */
     bool bNumLockWasOn = g_bOsNumLockOn;
     
-    /* Separate the altcode input into an array of the 4 numbers */
-    static uint16_t altcodekeypress[4];
+    /* Separate the altCode input into an array of the 4 numbers */
+    static uint16_t altCodekeypress[4];
     for (int8_t i = 3; i >= 0; i--)
     {
-        altcodekeypress[i] = altcode % 10;
-        altcode = altcode / 10;
+        altCodekeypress[i] = altCode % 10;
+        altCode = altCode / 10;
     }
 
     /* Convert each number from alt code array into key codes on numeric keypay */
     for (uint8_t i=0; i <= 3; i++)
     {
-        switch(altcodekeypress[i])
+        switch(altCodekeypress[i])
         {
             case 0:
-                altcodekeypress[i] = KC_KP_0;
+                altCodekeypress[i] = KC_KP_0;
                 break;
 
             case 1:
-                altcodekeypress[i] = KC_KP_1;
+                altCodekeypress[i] = KC_KP_1;
                 break;
 
             case 2:
-                altcodekeypress[i] = KC_KP_2;
+                altCodekeypress[i] = KC_KP_2;
                 break;
 
             case 3:
-                altcodekeypress[i] = KC_KP_3;
+                altCodekeypress[i] = KC_KP_3;
                 break;
 
             case 4:
-                altcodekeypress[i] = KC_KP_4;
+                altCodekeypress[i] = KC_KP_4;
                 break;
 
             case 5:
-                altcodekeypress[i] = KC_KP_5;
+                altCodekeypress[i] = KC_KP_5;
                 break;
 
             case 6:
-                altcodekeypress[i] = KC_KP_6;
+                altCodekeypress[i] = KC_KP_6;
                 break;
 
             case 7:
-                altcodekeypress[i] = KC_KP_7;
+                altCodekeypress[i] = KC_KP_7;
                 break;
 
             case 8:
-                altcodekeypress[i] = KC_KP_8;
+                altCodekeypress[i] = KC_KP_8;
                 break;
 
             case 9:
-                altcodekeypress[i] = KC_KP_9;
+                altCodekeypress[i] = KC_KP_9;
                 break;
         }
     }
@@ -252,9 +274,9 @@ void send_windows_altcode_sequence(uint16_t altcode, uint8_t shift_mask, keyreco
     /* Send Each Keypress In Order */
     for (uint8_t i=0; i <= 3; i++)
     {
-        add_key(altcodekeypress[i]);
+        add_key(altCodekeypress[i]);
         send_keyboard_report();
-        del_key(altcodekeypress[i]);
+        del_key(altCodekeypress[i]);
         send_keyboard_report();
     }
     
@@ -271,14 +293,14 @@ void send_windows_altcode_sequence(uint16_t altcode, uint8_t shift_mask, keyreco
     }
 
     /* Restore Left Shift to Previous State */
-    if (shift_mask & MOD_BIT(KC_LSFT))
+    if (shiftMask & MOD_BIT(KC_LSFT))
     {
         register_code(KC_LSFT);
         send_keyboard_report();
     }
 
     /* Restore Right Shift to Previous State */
-    if (shift_mask & MOD_BIT(KC_RSFT))
+    if (shiftMask & MOD_BIT(KC_RSFT))
     {
         register_code(KC_RSFT);
         send_keyboard_report();
@@ -290,11 +312,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
     static uint32_t sKeyTimer;
     static bool sIsMacAsleep = false;
-#if defined(USE_WINDOWS_ALT_CODES) || defined(USE_MAC_ALT_CODES) || defined(USE_UNICODE_ALT_LETTERS)
+#if defined(USE_WINDOWS_ALT_CODES) || defined(USE_MACOS_ALT_CODES) || defined(USE_UNICODE_ALT_LETTERS)
 	static uint8_t sShiftMask;
     sShiftMask = MODS_SHIFT;
 #endif
-    /* Default to MAC now */
+    /* Default to WIndows now */
     static bool bIsWindowsKeyboard = true;
 
     /* If in Mac Mode, special handling for sleep mode and wakeup */
@@ -371,17 +393,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             /* Á or á */
             if (record->event.pressed)
             {
-                // If a Mac
+                // If Macos
                 if (bIsWindowsKeyboard == false)
                 {
-#if defined(USE_MAC_ALT_CODES)
+#if defined(USE_MACOS_ALT_CODES)
                     if (sShiftMask)
                     {
-                        send_mac_altcode_sequence(LSFT(KC_A), sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, LSFT(KC_A), sShiftMask, record);
                     }
                     else
                     {
-                        send_mac_altcode_sequence(KC_A, sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, KC_A, sShiftMask, record);
                     }
 #endif
                 }
@@ -414,17 +436,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             /* É or é */
             if (record->event.pressed)
             {
-                // If a Mac
+                // If Macos
                 if (bIsWindowsKeyboard == false)
                 {
-#if defined(USE_MAC_ALT_CODES)
+#if defined(USE_MACOS_ALT_CODES)
                     if (sShiftMask)
                     {
-                        send_mac_altcode_sequence(LSFT(KC_E), sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, LSFT(KC_E), sShiftMask, record);
                     }
                     else
                     {
-                        send_mac_altcode_sequence(KC_E, sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, KC_E, sShiftMask, record);
                     }
 #endif
                 }
@@ -457,17 +479,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             /* Í or í */
             if (record->event.pressed)
             {
-                // If a Mac
+                // If Macos
                 if (bIsWindowsKeyboard == false)
                 {
-#if defined(USE_MAC_ALT_CODES)
+#if defined(USE_MACOS_ALT_CODES)
                     if (sShiftMask)
                     {
-                        send_mac_altcode_sequence(LSFT(KC_I), sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, LSFT(KC_I), sShiftMask, record);
                     }
                     else
                     {
-                        send_mac_altcode_sequence(KC_I, sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, KC_I, sShiftMask, record);
                     }
 #endif
                 }
@@ -501,17 +523,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             /* Ó or ó */
             if (record->event.pressed)
             {
-                // If a Mac
+                // If Macos
                 if (bIsWindowsKeyboard == false)
                 {
-#if defined(USE_MAC_ALT_CODES)
+#if defined(USE_MACOS_ALT_CODES)
                     if (sShiftMask)
                     {
-                        send_mac_altcode_sequence(LSFT(KC_O), sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, LSFT(KC_O), sShiftMask, record);
                     }
                     else
                     {
-                        send_mac_altcode_sequence(KC_O, sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, KC_O, sShiftMask, record);
                     }
 #endif
                 }
@@ -545,17 +567,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             /* Ú or ú */
             if (record->event.pressed)
             {
-                // If a Mac
+                // If Macos
                 if (bIsWindowsKeyboard == false)
                 {
-#if defined(USE_MAC_ALT_CODES)
+#if defined(USE_MACOS_ALT_CODES)
                     if (sShiftMask)
                     {
-                        send_mac_altcode_sequence(LSFT(KC_U), sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, LSFT(KC_U), sShiftMask, record);
                     }
                     else
                     {
-                        send_mac_altcode_sequence(KC_U, sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, KC_U, sShiftMask, record);
                     }
 #endif
                 }
@@ -588,17 +610,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             /* Æ or æ */
             if (record->event.pressed)
             {
-                // If a Mac
+                // If Macos
                 if (bIsWindowsKeyboard == false)
                 {
-#if defined(USE_MAC_ALT_CODES)
+#if defined(USE_MACOS_ALT_CODES)
                     if (sShiftMask)
                     {
-                        send_mac_altcode_sequence(LSFT(KC_QUOT), sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, LSFT(KC_QUOT), sShiftMask, record);
                     }
                     else
                     {
-                        send_mac_altcode_sequence(KC_QUOT, sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, KC_QUOT, sShiftMask, record);
                     }
 #endif
                 }
@@ -631,17 +653,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             /* Ñ or ñ */
             if (record->event.pressed)
             {
-                // If a Mac
+                // If Macos
                 if (bIsWindowsKeyboard == false)
                 {
-#if defined(USE_MAC_ALT_CODES)
+#if defined(USE_MACOS_ALT_CODES)
                     if (sShiftMask)
                     {
-                        send_mac_altcode_sequence(LSFT(KC_N), sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, LSFT(KC_N), sShiftMask, record);
                     }
                     else
                     {
-                        send_mac_altcode_sequence(KC_N, sShiftMask, record);
+                        send_macos_altcode_sequence(keycode, KC_N, sShiftMask, record);
                     }
 #endif
                 }
@@ -708,12 +730,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
         case KC_MAC:
             bIsWindowsKeyboard = false;
-            keymap_config.swap_lalt_lgui = true;
+            tap_code16(DF(_MACOS));
             break;
 
         case KC_WIN:
             bIsWindowsKeyboard = true;
-            keymap_config.swap_lalt_lgui = false;
+            tap_code16(DF(_WINDOWS));
             break;
 
         case KC_SLEEP:
@@ -732,6 +754,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
                 {
                     tap_code(KC_ESCAPE);
                 }    
+            }
+            return false;
+
+        case KC_KP_MINUS:
+            if (sShiftMask)
+            {
+                /* Keypad Divide */
+                tap_code16(KC_KP_SLASH);
+            }
+            else
+            {
+                /* Keypad Minus */
+                tap_code16(KC_KP_MINUS);
+            }
+            return false;
+            
+        case KC_KP_PLUS:
+            if (sShiftMask)
+            {
+                /* Keypad Multiply */
+                tap_code16(KC_KP_ASTERISK);
+            }
+            else
+            {
+                /* Keypad Plus */
+                tap_code16(KC_KP_PLUS);
             }
             return false;
 
