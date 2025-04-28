@@ -16,6 +16,11 @@
 #define USE_WINDOWS_ALT_CODES
 #define USE_MACOS_ALT_CODES
 
+// RGB functions (Defaults)
+#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#define RGB_MATRIX_KEYPRESSES
+#define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_ALPHAS_MODS
+
 // RGB Matrix Animation modes. Explicitly disabled from the normal
 // Massdrop Ctrl Configuration (massdrop/ctrl/config.h override)
 // For full list of effects, see:

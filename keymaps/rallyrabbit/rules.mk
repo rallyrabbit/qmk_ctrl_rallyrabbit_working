@@ -9,3 +9,4 @@ UNICODE_ENABLE = yes        # Enable Unicode Characters/Strings
 #Custom RGB
 RGB_MATRIX_CUSTOM_USER = yes
 
+SRC += config_led.c

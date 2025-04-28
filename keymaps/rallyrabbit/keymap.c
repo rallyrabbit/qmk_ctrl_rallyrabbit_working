@@ -3,92 +3,133 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
 
-#include QMK_KEYBOARD_H
-
-#include QMK_KEYBOARD_H
-
-enum ctrl_rallyrabbit_layers
-{
-  _WINDOWS,
-  _MACOS,
-  _FUNCTION
-};
-
-enum ctrl_keycodes {
-    U_T_AUTO = SAFE_RANGE, /* USB Extra Port Toggle Auto Detect / Always Active */
-    U_T_AGCR,              /* USB Toggle Automatic GCR control */
-    DBG_TOG,               /* DEBUG Toggle On / Off */
-    DBG_MTRX,              /* DEBUG Toggle Matrix Prints */
-    DBG_KBD,               /* DEBUG Toggle Keyboard Prints */
-    DBG_MOU,               /* DEBUG Toggle Mouse Prints */
-    MD_BOOT,               /* Restart into bootloader after hold timeout */
-    KC_A_AC,               /* A with acute accent */
-    KC_E_AC,               /* E with acute accent */
-    KC_I_AC,               /* I with acute accent */
-    KC_O_AC,               /* O with acute accent */
-    KC_U_AC,               /* U with acute accent */
-    KC_NT_C,               /* N with tilda */
-    KC_AE_C,               /* AE character */
-    KC_SLEEP,              /* Sleep Key */
-    KC_WIN,                /* Set to Windows Keyboard */
-    KC_MAC                 /* Set to Macos Keyboard */
-};
-
-/* Special key codes for layer changes */
-#define SC_WIN DF(_WINDOWS)
-#define SC_MAC DF(_MACOS)
-#define SC_FUNC MO(_FUNCTION)
+#include "keymap.h"
 
 //KC_F1
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_WINDOWS] = LAYOUT(
-        KC_ESC,  MD_BOOT,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                     KC_PSCR, KC_SCRL, KC_PAUS,
+        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                     KC_PSCR, KC_SCRL, KC_PAUS,
         KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,           KC_INS,  KC_HOME, KC_PGUP,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,           KC_DEL,  KC_END,  KC_PGDN,
         KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                                      KC_UP,
-        KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                             KC_RALT, SC_FUNC, KC_APP,  KC_RCTL,                     KC_LEFT, KC_DOWN, KC_RGHT
+        KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC,                             KC_RALT, SC_FUNC, KC_APP,  KC_RCTL,                    KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_MACOS] = LAYOUT(
-        KC_ESC,  MD_BOOT,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                     KC_PSCR, KC_SCRL, KC_PAUS,
+        KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                     KC_PSCR, KC_SCRL, KC_PAUS,
         KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,           KC_INS,  KC_HOME, KC_PGUP,
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,           KC_DEL,  KC_END,  KC_PGDN,
         KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                                      KC_UP,
-        KC_LCTL, KC_LALT, KC_LGUI,                   KC_SPC,                             KC_RGUI, SC_FUNC, KC_LALT, KC_RCTL,                     KC_LEFT, KC_DOWN, KC_RGHT
+        KC_LCTL, KC_LALT, KC_LGUI,                   KC_SPC,                             KC_RGUI, SC_FUNC, KC_LALT, KC_RCTL,                    KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_FUNCTION] = LAYOUT(
-        KC_SLEEP, MD_BOOT, _______, _______, _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                   KC_MUTE, _______, _______,
-        KC_NUM,  KC_KP_1, KC_KP_2, KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, KC_KP_MINUS, KC_KP_PLUS, _______,   _______, KC_BRIU, KC_VOLU,
-        _______, _______, KC_WIN,  KC_E_AC, _______, _______, _______, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,          _______, KC_BRID, KC_VOLD,
+        KC_SLEEP,MD_BOOT, _______, _______, _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, _______, _______,
+        KC_NUM,  KC_KP_1, KC_KP_2, KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, KC_KP_MINUS, KC_KP_PLUS, _______,    _______, KC_BRIU, KC_VOLU,
+        _______, _______, KC_WIN,  KC_E_AC, _______, _______, _______, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,           _______, KC_BRID, KC_VOLD,
         _______, KC_A_AC, KC_AE_C, RGB_SPI, RGB_VAI, RGB_SAI, _______, _______, _______, _______, _______, _______, KC_ENT,
-        KC_LSFT, RGB_TOG, _______, RGB_SPD, RGB_VAD, RGB_SAD, KC_NT_C, KC_MAC,  _______, _______, _______, KC_RSFT,                                      RGB_HUI,
-        _______, _______, _______,                   _______,                            _______, _______, _______, _______,                   RGB_RMOD, RGB_HUD, RGB_MOD
+        KC_LSFT, RGB_TOG, RGB_TO_TOG, RGB_SPD, RGB_VAD, RGB_SAD, KC_NT_C, KC_MAC,  _______, _______, _______, KC_RSFT,                                       RGB_HUI,
+        _______, _______, _______,                   _______,                            _______, _______, _______, _______,                    RGB_RMOD, RGB_HUD, RGB_MOD
     ),
-    /*
-    [X] = LAYOUT(
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,            _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,   _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,   _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        _______, _______, _______, _______, _______, _______, NK_TOGG, _______, _______, _______, _______, _______,                              _______,
-        _______, _______, _______,                   _______,                            _______, _______, _______, _______,            _______, _______, _______
-    ),
-    */
 };
 
-/* External reference to the keymap config */
-extern keymap_config_t keymap_config;
+#ifdef _______
+#undef _______
+#endif
+#define _______ {0, 0, 0}
 
+const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
+    [_FUNCTION] = {
+        YELLOW,  RED,     _______, _______, _______, _______, _______, _______, _______, YELLOW, YELLOW, YELLOW, YELLOW,                        YELLOW,  _______, _______,
+        BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,   _______,            _______, YELLOW,  YELLOW,
+        _______, _______, YELLOW,  GREEN,   _______, _______, _______, GREEN,   GREEN,   GREEN,   _______, ORANGE,  ORANGE, _______,            _______, YELLOW,  YELLOW,
+        _______, GREEN,   GREEN,   PINK,    PINK,    PINK,    _______, _______, _______, _______, _______, _______, _______,
+        GREEN,   PINK,    PINK,    PINK,    PINK,    PINK,     GREEN,   YELLOW,  _______, _______, _______, GREEN,                                       PINK,
+        _______, _______, _______,                   _______,                            _______, _______, _______, _______,                    PINK,    PINK,    PINK
+    },
+};
+
+#undef _______
+#define _______ KC_TRNS
+
+// External reference to the keymap config and matrix
+extern keymap_config_t keymap_config;
+extern rgb_config_t rgb_matrix_config;
+
+// idleTimer = LED Timeout Timer; idleCounterSeconds=Counter in Seconds; keyEventCounter = key event counter
+static uint16_t idleTimer;
+static uint8_t idleCounterSeconds;
+static uint8_t keyEventCounter;
+static uint16_t rgbTimeoutSeconds;
+
+// Caps and Num Lock State
+static bool g_bOsNumLockOn = false;
+static bool g_bOsCapsLockOn = false;
+
+// RGB control flags for the driver
+bool disable_layer_color;
+bool rgbEnabled;
+bool rgbTimeoutEnabled;
+led_flags_t rgbTimeoutSaveMatrixFlags;
+
+// Runs one time at keyboard initialization
 void matrix_init_user(void)
 {
-    /* Initialize for the Windows Unicode Set for Special Characters by default */
+    // Initialize for the Windows Unicode Set for Special Characters by default
     set_unicode_input_mode(UNICODE_MODE_WINDOWS);
+
+    // Counter in seconds: keyboard idle (no key pressed)
+    idleCounterSeconds = 0;
+
+    // Counter of Key Events Pressed
+    keyEventCounter = 0;
+
+    // RGB timeout initialized
+    rgbTimeoutSeconds = DEFAULT_RGB_TIMEOUT_SECONDS;
+
+    // RGB Timeout enable/disable
+    rgbTimeoutEnabled = true;
+
+    // RGB enable/disable
+    rgbEnabled = true;
+
+    // RGB Matrix state (to go back to after idle)
+    rgbTimeoutSaveMatrixFlags = rgb_matrix_get_flags();
+};
+
+// Called after initialization
+void keyboard_post_init_user(void)
+{
+    rgb_matrix_enable();
 }
 
-/* Used to save the Num & Caps Lock state from the LED */
-bool g_bOsNumLockOn = false;
-bool g_bOsCapsLockOn = false;
+// Called from the driver run loop constantly
+void matrix_scan_user(void)
+{
+    if ((rgbTimeoutEnabled == true) && (rgbEnabled == true))
+    {
+        // As long as a key is pressed (>0) then a key is pressed so do not increemnt timer
+        if (keyEventCounter > 0)
+        {
+            idleCounterSeconds = 0;
+        }
+        else if (timer_elapsed(idleTimer) > MS_TO_SECONDS)
+        {
+            idleCounterSeconds++;
+            idleTimer = timer_read();
+        }
+
+        if (idleCounterSeconds >= rgbTimeoutSeconds) {
+            rgbTimeoutSaveMatrixFlags = rgb_matrix_get_flags();
+            rgb_matrix_set_flags(LED_FLAG_NONE);
+            rgb_matrix_disable_noeeprom();
+            rgbEnabled = false;
+            idleCounterSeconds = 0;
+        }
+    }
+}
+
+// Used to save the Num & Caps Lock state from the LED
 void led_set_user(uint8_t usb_led)
 {
     g_bOsNumLockOn = IS_LED_ON(usb_led, USB_LED_NUM_LOCK);
@@ -96,6 +137,7 @@ void led_set_user(uint8_t usb_led)
 }
 
 #if defined(USE_MACOS_ALT_CODES)
+// Handle keypresses to perform MAC OS X special keys
 void send_macos_altcode_sequence(uint16_t keyCode, uint16_t overrideKeycode, uint8_t shiftMask, keyrecord_t *record)
 {
     /* Sends the "alt code" defined in altcode parameter.
@@ -175,6 +217,7 @@ void send_macos_altcode_sequence(uint16_t keyCode, uint16_t overrideKeycode, uin
 #endif
 
 #if defined(USE_WINDOWS_ALT_CODES)
+// Handle keypresses to perform Windows Alt Codes special keys
 void send_windows_altcode_sequence(uint16_t altCode, uint8_t shiftMask, keyrecord_t *record)
 {
     /* Sends the "alt code" defined in altCode parameter.
@@ -308,6 +351,50 @@ void send_windows_altcode_sequence(uint16_t altCode, uint8_t shiftMask, keyrecor
 }
 #endif
 
+void set_layer_color(int layer)
+{
+    if ((layer == _WINDOWS) || (layer == _MACOS))
+    { 
+        return;
+    }
+
+    // Go through the Drop CTRL Maxtrix Count for every LED
+    for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++)
+    {
+        HSV hsv =
+        {
+            .h = pgm_read_byte(&ledmap[layer][i][0]),
+            .s = pgm_read_byte(&ledmap[layer][i][1]),
+            .v = pgm_read_byte(&ledmap[layer][i][2]),
+        };
+
+        if (hsv.h || hsv.s || hsv.v)
+        {
+            RGB rgb = hsv_to_rgb(hsv);
+            float f = (float) rgb_matrix_config.hsv.v / UINT8_MAX;
+            rgb_matrix_set_color(i, f * rgb.r, f * rgb.g, f * rgb.b);
+        }
+        else if (layer != 1)
+        {
+            // Only deactivate non-defined key LEDs at layers other than FN. Because at FN we have RGB adjustments and need to see them live.
+            // If the values are all false then it's a transparent key and deactivate LED at this layer
+            rgb_matrix_set_color(i, 0, 0, 0);
+        }
+    }
+}
+
+bool rgb_matrix_indicators_user(void)
+{
+    if (disable_layer_color || rgb_matrix_get_flags() == LED_FLAG_NONE || rgb_matrix_get_flags() == LED_FLAG_UNDERGLOW)
+    {
+        return true;
+    }
+
+    set_layer_color(get_highest_layer(layer_state));
+
+    return false;
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
     static uint32_t sKeyTimer;
@@ -330,6 +417,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         }    
     }
 
+//adamo - special handling for sleep mode
+
+    // Increment counter of key events when key is pressed, decrement when released
+    if (record->event.pressed)
+    {
+        keyEventCounter++;
+    }
+    else
+    {
+        keyEventCounter--;
+    }
+
+    if (rgbTimeoutEnabled == true)
+    {
+        idleTimer = timer_read();
+
+        // Key press clears the counters and re-enables the last used RGB mode
+        idleCounterSeconds = 0;
+        if (rgbEnabled == false)
+        {
+            rgb_matrix_enable_noeeprom();
+            rgb_matrix_set_flags(rgbTimeoutSaveMatrixFlags);
+            rgbEnabled = true;
+        }
+    }
+
     /* Main Key Code Handling for this keymap */
     switch (keycode)
     {
@@ -344,34 +457,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             if (record->event.pressed && MODS_SHIFT && MODS_CTRL)
             {
                 TOGGLE_FLAG_AND_PRINT(usb_gcr_auto, "USB GCR auto mode");
-            }
-            return false;
-
-        case DBG_TOG:
-            if (record->event.pressed)
-            {
-                TOGGLE_FLAG_AND_PRINT(debug_enable, "Debug mode");
-            }
-            return false;
-
-        case DBG_MTRX:
-            if (record->event.pressed)
-            {
-                TOGGLE_FLAG_AND_PRINT(debug_matrix, "Debug matrix");
-            }
-            return false;
-
-        case DBG_KBD:
-            if (record->event.pressed)
-            {
-                TOGGLE_FLAG_AND_PRINT(debug_keyboard, "Debug keyboard");
-            }
-            return false;
-
-        case DBG_MOU:
-            if (record->event.pressed)
-            {
-                TOGGLE_FLAG_AND_PRINT(debug_mouse, "Debug mouse");
             }
             return false;
 
@@ -720,6 +805,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
                     default:
                     {
+                        rgbTimeoutEnabled = false;
                         rgb_matrix_set_flags(LED_FLAG_ALL);
                         rgb_matrix_enable_noeeprom();
                     }
@@ -728,15 +814,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             }
             return false;
 
+        case RGB_TO_TOG:
+            // Turns teh RGB timeout option on or off based on default timeout
+            if (rgbTimeoutEnabled == true)
+            {
+                rgbTimeoutEnabled = false;
+            }
+            else
+            {
+                rgbTimeoutEnabled = true;
+            }
+            return false;
+        
         case KC_MAC:
             bIsWindowsKeyboard = false;
             tap_code16(DF(_MACOS));
-            break;
+            return false;
 
         case KC_WIN:
             bIsWindowsKeyboard = true;
             tap_code16(DF(_WINDOWS));
-            break;
+            return false;
 
         case KC_SLEEP:
             /* If not set to Mac Mode, then ignore the sleep button */
