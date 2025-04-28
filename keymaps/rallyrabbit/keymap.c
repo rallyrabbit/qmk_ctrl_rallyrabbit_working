@@ -66,6 +66,9 @@ static uint16_t rgbTimeoutSeconds;
 static bool g_bOsNumLockOn = false;
 static bool g_bOsCapsLockOn = false;
 
+// boolean used for my Hella and Deep River Matrix Effects
+bool g_isEffectDR = false;
+
 // RGB control flags for the driver
 bool disable_layer_color;
 bool rgbEnabled;
