@@ -1,23 +1,46 @@
-# Massdrop Ctrl RallyRabbit
+# DROP CTRL Keyboard RallyRabbit Driver
 
 This is the keymap and other items tied to the RallyRabbit customizations for the Massdrop CTRL
 
-The main layer is a ~standard ANSI QWERTY layout for Windows.
+## Main Features
 
-The Second Layer is modified from the standard QMK and Massdrop CTRL standard layouts.  The
-biggest change is the attempt to allow for keycodes of capital and lowercase Á, É, Í, Ó, Ú, and Æ.
-The present method is using unicode keycodes by forcing the keyboard into standard Windows unicode
-setup.
+I really like the Drop CTRL keyboard, but I really dislike the Drop CTRL driver for it and feel like Drop really strayed from the benefits of QMK.  My goal was to take the Drop CTRL driver and make it much more standard to QMK.  My features include.
 
-Additionally, Layer 1 also moves the RGB Mode and Hue keys, as well as a way to enable the bookt load
-and USB port on the keyboard.
-
-Additionally this changes much of the RGB setup.
-* Removed many of the standard QMK modes
+Features that are complete:
+* Standard Windows and Mac OS X QWERTY keyboard layouts
+* Added most of the standard QMK RGB Matrix Patterns.
 * Added Rainbow Diaganol which is a small tweak of Cool Diaganol of HorrorTroll
 * Added Flower Blooming of HorrorTroll
 * Added Deep River (unchangeable blue with green saturation that moves)
 * Added Deep River Reverse (unchangeable green with blue saturation that moves)
+* Added Hella Rally Rabbit Theme (unchangeable blue with green saturation that moves)
+* Added Hella Rally Rabbit Reverse (unchangeable green with blue saturation that moves)
+* Added 30 minutes keybaord timeout inactivity to diable the RGB matrix
+* Added a Windows Keyboard Layout (default) with bottom row as CTRL WIN ALT SPACE ALT FN MENU CTRL
+* Added hotkey FN-W to set windows keyboard mode
+* Added a Mac OS X Keybaord Layout with bottom row as CTRL OPT CMD SPACE CMD FN OPT CTRL
+* Added hotkey FN-M to set windows keybaord mode
+* Added FN-Z to toggle RGB Modes
+* Added FN-X to toggle RGB timeout mode
+* Added funciton key layout that cancels RGB Matrix and loads keymap (see function key layout)
+* Added Keypad as FN-0 to FN-9 with keypad -/ and +* keys
+* Added Audio controls and sound mute to FN hotkeys
+* Added Sound volume to FN-Page Up and FN-Page Down
+* Added Boot Loader hotkey as FN-F1
+* Added FN-ESC for Windows and Mac sleep modes
+* Added Spanish accent letters to FN-A, FN-E, FN-I, FN-O, FN-U (Á, É, Í, Ó, Ú)
+* Added Spanish N with Tilda to FN-N
+* Added British/Nordic AE to FN-S (Æ)
+* Special characters work as Windows unicode, Windows Alt-Code, and Mac Special Sequence output
+* Full RGB controls (see layout)
+* Num Lock on the FN-` key
+
+## Things Incomplete
+
+Items that I still want to add to the driver:
+* Special LED sequence when caps lock is pressed on caps lock key
+* Special LED sequence when scroll lock is pressed on scroll lock key
+* Figuring out why LED on Z key is not the correct color
 
 ## To Use
 
@@ -29,12 +52,17 @@ Follow the QMK directions isntalling QMK MSYS.
 
 ## Layers
 
-### Typing Layer
+### Windows Typing Layer
 
-![Typing Layer](https://imgur.com/9oORY9m)
+![Image](https://i.imgur.com/RS2nLDM.png)
 
-### "Other" Layer
+### Mac OS X Typing Layer
 
-![Function Layer](https://imgur.com/DVn1ilN)
+![Image](https://i.imgur.com/SNfU9fI.png)
+
+
+### "Function" Layer
+
+![Image](https://i.imgur.com/KCZKmJT.png)
 
 
