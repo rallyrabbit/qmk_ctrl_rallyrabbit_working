@@ -24,7 +24,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LALT, KC_LGUI,                   KC_SPC,                             KC_RGUI, SC_FUNC, KC_LALT, KC_RCTL,                    KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_FUNCTION] = LAYOUT(
-        KC_SLEEP, MD_BOOT, _______,    _______, _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, _______, _______,
+        KC_SLEEP, MD_BOOT, _______,    EE_CLR,  _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, _______, _______,
         KC_NUM,   KC_KP_1, KC_KP_2,    KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, KC_KP_MINUS, KC_KP_PLUS, _______,    _______, KC_BRIU, KC_VOLU,
         _______,  _______, KC_WIN,     KC_E_AC, _______, _______, _______, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,           _______, KC_BRID, KC_VOLD,
         _______,  KC_A_AC, KC_AE_C,    RGB_SPI, RGB_VAI, RGB_SAI, _______, _______, _______, _______, _______, _______, KC_ENT,
@@ -40,11 +40,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [_FUNCTION] = {
-        YELLOW,   RED,     _______,    _______, _______, _______, _______, _______, _______, YELLOW, YELLOW, YELLOW, YELLOW,                        YELLOW,  _______, _______,
+        YELLOW,   RED,     _______,    RED,     _______, _______, _______, _______, _______, YELLOW, YELLOW, YELLOW, YELLOW,                        YELLOW,  _______, _______,
         BLUE,     BLUE,    BLUE,       BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,   _______,            _______, YELLOW,  YELLOW,
         _______,  _______, YELLOW,     GREEN,   _______, _______, _______, GREEN,   GREEN,   GREEN,   _______, ORANGE,  ORANGE, _______,            _______, YELLOW,  YELLOW,
         _______,  GREEN,   GREEN,      PINK,    PINK,    PINK,    _______, _______, _______, _______, _______, _______, _______,
-        GREEN,    PINK,    PINK,       PINK,    PINK,    PINK,     GREEN,   YELLOW,  _______, _______, _______, GREEN,                                       PINK,
+        GREEN,    PURPLE,  PURPLE,     PINK,    PINK,    PINK,     GREEN,   YELLOW,  _______, _______, _______, GREEN,                                       PINK,
         _______,  _______, _______,                   _______,                            _______, _______, _______, _______,                    PINK,    PINK,    PINK
     },
 };

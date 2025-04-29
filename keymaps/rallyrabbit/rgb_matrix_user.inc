@@ -18,7 +18,7 @@ RGB_MATRIX_EFFECT(FLOWER_BLOOMING)
 RGB_MATRIX_EFFECT(RAINBOW_DIAGONAL)
 RGB_MATRIX_EFFECT(BAND_SAT_DEEP_RIVER)
 RGB_MATRIX_EFFECT(BAND_SAT_DEEP_RIVER_REVERSE)
-RGB_MATRIX_EFFECT(DEEP_RIVER_CYLON)
+RGB_MATRIX_EFFECT(RALLY_RABBIT_CYLON)
 RGB_MATRIX_EFFECT(BAND_SAT_RALLYRABBIT_HELLA)
 RGB_MATRIX_EFFECT(BAND_SAT_RALLYRABBIT_HELLA_REVERSE)
 
@@ -49,18 +49,18 @@ static uint8_t time_to_led(uint8_t time, uint8_t ledBehind, uint8_t ledCount)
     return led;
 }
 
-static HSV DEEP_RIVER_CYLON_math(HSV hsv, uint8_t i, uint8_t time)
+static HSV RALLY_RABBIT_CYLON_math(HSV hsv, uint8_t i, uint8_t time)
 {
     /* Row 1 (Escape/Functions to Pause) */
     /* Row 2 (Number row to page up) */
     /* Row 3 (First row of letters to Page Down */
     uint8_t ledFirst[3] = {   0,  16,  33 };
     uint8_t ledCount[3] = {  16,  17,  17 };
-    uint8_t hsv_h[3]    = { 170,  85, 170 };
+    uint8_t hsv_h[3]    = { 191,  0,  191 };
 
-    /* Row 1/3: Base Color as Deep River Green */
-    /* Row 2: Base Color as Deep River Green */
-    /* The Blue and Green Color Targeting Share some of the HSV Hue and Value settings */
+    /* Row 1/3: Base Color as Purple */
+    /* Row 2: Base Color as Red */
+    /* The Red and Purple Color Targeting Share some of the HSV Hue and Value settings */
     hsv.s = 255;
     hsv.v = 255;
 
@@ -121,9 +121,9 @@ static HSV DEEP_RIVER_CYLON_math(HSV hsv, uint8_t i, uint8_t time)
     return hsv;
 }
 
-bool DEEP_RIVER_CYLON(effect_params_t* params)
+bool RALLY_RABBIT_CYLON(effect_params_t* params)
 {
-    return effect_runner_i(params, &DEEP_RIVER_CYLON_math);
+    return effect_runner_i(params, &RALLY_RABBIT_CYLON_math);
 }
 
 /*
