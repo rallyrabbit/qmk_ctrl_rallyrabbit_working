@@ -41,6 +41,7 @@ Items that I still want to add to the driver:
 * Special LED sequence when caps lock is pressed on caps lock key
 * Special LED sequence when scroll lock is pressed on scroll lock key
 * Figuring out why LED on Z key is not the correct color
+* Caps Word
 
 ## To Use
 
