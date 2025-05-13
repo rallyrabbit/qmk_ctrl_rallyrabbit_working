@@ -8,11 +8,11 @@
    SPDX-License-Identifier: GPL-2.0-or-later
 */
  
-/* !!! DO NOT ADD #pragma once !!! */
+// !!! DO NOT ADD #pragma once !!!
 
-/* Step 1. */
-/* Declare custom effects using the RGB_MATRIX_EFFECT macro */
-/* (note the lack of semicolon after the macro!) */
+// Step 1.
+// Declare custom effects using the RGB_MATRIX_EFFECT macro
+// (note the lack of semicolon after the macro!)
 
 RGB_MATRIX_EFFECT(FLOWER_BLOOMING)
 RGB_MATRIX_EFFECT(RAINBOW_DIAGONAL)
@@ -23,15 +23,16 @@ RGB_MATRIX_EFFECT(BAND_SAT_RALLYRABBIT_HELLA)
 RGB_MATRIX_EFFECT(BAND_SAT_RALLYRABBIT_HELLA_REVERSE)
 RGB_MATRIX_EFFECT(RALLY_RABBIT_MATRIX_RAIDROPS)
 
-/* Step 2. */
-/* Define effects inside the `RGB_MATRIX_CUSTOM_EFFECT_IMPLS` ifdef block */
+// Step 2.
+// Define effects inside the `RGB_MATRIX_CUSTOM_EFFECT_IMPLS` ifdef block
 #ifdef RGB_MATRIX_CUSTOM_EFFECT_IMPLS
 
 /*
  * DEEP RIVER CYCLON - Green and Blue mimicing BSG Cylon Robot Eye
  */
 
-/* Support function for CYLON Animation */
+// Support function for CYLON Animation
+uint8_t g_isBackward = false;
 static uint8_t time_to_led(uint8_t time, uint8_t ledBehind, uint8_t ledCount)
 {
     uint16_t ledTime = ledCount * time;
@@ -41,10 +42,12 @@ static uint8_t time_to_led(uint8_t time, uint8_t ledBehind, uint8_t ledCount)
     if (step < ledCount)
     {
         led = step;
+        g_isBackward = false;
     }
     else
     {
         led = ledCount - 1 - (step - ledCount);
+        g_isBackward = true;
     }
 
     return led;
@@ -52,70 +55,162 @@ static uint8_t time_to_led(uint8_t time, uint8_t ledBehind, uint8_t ledCount)
 
 static HSV RALLY_RABBIT_CYLON_math(HSV hsv, uint8_t i, uint8_t time)
 {
-    /* Row 1 (Escape/Functions to Pause) */
-    /* Row 2 (Number row to page up) */
-    /* Row 3 (First row of letters to Page Down */
-    uint8_t ledFirst[3] = {   0,  16,  33 };
-    uint8_t ledCount[3] = {  16,  17,  17 };
-    uint8_t hsv_h[3]    = { 191,  0,  191 };
+    // Row 1 (Escape/Functions to Pause)
+    // Row 2 (Number row to page up)
+    // Row 3 (First row of letters to Page Down
+    uint8_t ledFirst[3] = {   0,  16,  33 }; // LED Number of first LED on the row (row1, row2, row3)
+    uint8_t ledCount[3] = {  16,  17,  17 }; // LEDs on the row (row1, row2, row3)
+    uint8_t hsv_h[3]    = {  20,   0,  20 }; // HSV.h value override for each LED on each row (row1, row2, row3)
 
-    /* Row 1/3: Base Color as Purple */
-    /* Row 2: Base Color as Red */
-    /* The Red and Purple Color Targeting Share some of the HSV Hue and Value settings */
+    // Row 1/3: Base Color as Orange
+    // Row 2: Base Color as Red
+    // The Red and Orange Color Targeting Share some of the HSV Hue and Value settings
     hsv.s = 255;
     hsv.v = 255;
 
     bool effectLedFound = false;
 
-    /* Traverse the possible LED Matches by desired positions in rows */
+    // Traverse the possible LED Matches by desired positions in rows
     for (uint8_t row=0; row < 3; row++)
     {
-        if (i >= ledFirst[row] && i < ledFirst[row] + ledCount[row])
+        if ((i >= ledFirst[row]) && (i < ledFirst[row] + ledCount[row]))
         {
             uint8_t j = i - ledFirst[row];
 
-            if (j == time_to_led(time, 0, ledCount[row]))
+            if (row == 1)
             {
-                hsv.h = hsv_h[row];
-                hsv.v = hsv.v;
-                effectLedFound = true;
-                break;
+                if (j == time_to_led(time, 0, ledCount[row]))
+                {
+    
+                    hsv.h = hsv_h[row];
+                    hsv.v = hsv.v;
+                    effectLedFound = true;
+                    break;
+                }
+                else if (j == time_to_led(time, 1, ledCount[row]))
+                {
+                    hsv.h = hsv_h[row];
+                    hsv.v = hsv.v;
+                    effectLedFound = true;
+                    break;
+                }
+                else if (j == time_to_led(time, 2, ledCount[row]))
+                {
+                    hsv.h = hsv_h[row];
+                    hsv.v = hsv.v / 2;
+                    effectLedFound = true;
+                    break;
+                }
+                else if (j == time_to_led(time, 3, ledCount[row]))
+                {
+                    hsv.h = hsv_h[row];
+                    hsv.v = hsv.v / 4;
+                    effectLedFound = true;
+                    break;
+                }
+                else if (j == time_to_led(time, 4, ledCount[row]))
+                {
+                    hsv.h = hsv_h[row];
+                    hsv.v = hsv.v / 8;
+                    effectLedFound = true;
+                    break;
+                }
+                else
+                {
+                    // Position not on, turn off (Black)
+                    hsv.v = 0;
+                    effectLedFound = true;
+                    break;
+                }    
             }
-            else if (j == time_to_led(time, 1, ledCount[row]))
+            else // if ((row == 0) || (row == 2))
             {
-                hsv.h = hsv_h[row];
-                hsv.v = hsv.v / 2;
-                effectLedFound = true;
-                break;
-            }
-            else if (j == time_to_led(time, 2, ledCount[row]))
-            {
-                hsv.h = hsv_h[row];
-                hsv.v = hsv.v / 4;
-                effectLedFound = true;
-                break;
-            }
-            else if (j == time_to_led(time, 3, ledCount[row]))
-            {
-                hsv.h = hsv_h[row];
-                hsv.v = hsv.v / 8;
-                effectLedFound = true;
-                break;
-            }
-            else
-            {
-                /* Position not on, turn off (Black) */
-                hsv.v = 0;
-                effectLedFound = true;
-                break;
+                if (g_isBackward == false)
+                {
+                    if (j == time_to_led(time, 1, ledCount[row]))
+                    {
+        
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else if (j == time_to_led(time, 2, ledCount[row]))
+                    {
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v / 2;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else if (j == time_to_led(time, 3, ledCount[row]))
+                    {
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v / 4;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else if (j == time_to_led(time, 4, ledCount[row]))
+                    {
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v / 8;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else
+                    {
+                        // Position not on, turn off (Black)
+                        hsv.v = 0;
+                        effectLedFound = true;
+                        break;
+                    }    
+                }
+                else
+                {
+                    if (j == time_to_led(time, 0, ledCount[row]))
+                    {
+        
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else if (j == time_to_led(time, 1, ledCount[row]))
+                    {
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v / 2;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else if (j == time_to_led(time, 2, ledCount[row]))
+                    {
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v / 4;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else if (j == time_to_led(time, 3, ledCount[row]))
+                    {
+                        hsv.h = hsv_h[row];
+                        hsv.v = hsv.v / 8;
+                        effectLedFound = true;
+                        break;
+                    }
+                    else
+                    {
+                        // Position not on, turn off (Black)
+                        hsv.v = 0;
+                        effectLedFound = true;
+                        break;
+                    }    
+                }
             }
         }
     }
 
-    /* No Match Found */
+    // No Match Found
     if (effectLedFound == false)
     {
-        /* Off (Black) */
+        // Off (Black)
         hsv.v = 0;
     }
 
@@ -175,10 +270,10 @@ static HSV BAND_SAT_dr_hella_math(HSV hsv, uint8_t i, uint8_t time)
     extern bool g_isEffectDR;
     int16_t v = hsv.v - abs(scale8(g_led_config.point[i].x, 228) + 28 - time) * 8;
  
-    /* When value is 0, then override from black to desired backgroun color */
+    // When value is 0, then override from black to desired backgroun color
     if (v <= 0)
     {
-        /* When algorithm would normally set up black (v == 0), let's go back to HSV_BLUE */
+        // When algorithm would normally set up black (v == 0), let's go back to HSV_BLUE
         hsv.s = 255;
         hsv.v = 255;
         hsv.h = 170;
@@ -187,14 +282,14 @@ static HSV BAND_SAT_dr_hella_math(HSV hsv, uint8_t i, uint8_t time)
     {
         if (g_isEffectDR == false)
         {
-            /* Gradient of Green (HSV_YELLOW) when it isn't blue (HSV_BLUE) */
+            // Gradient of Green (HSV_YELLOW) when it isn't blue (HSV_BLUE)
             hsv.s = 255;
             hsv.v = scale8(v < 0 ? 0 : v, hsv.v);
             hsv.h = 45;
         }
         else
         {
-            /* Gradient of Green (HSV_GREEN) when it isn't blue (HSV_BLUE) */
+            // Gradient of Green (HSV_GREEN) when it isn't blue (HSV_BLUE)
             hsv.s = 255;
             hsv.v = scale8(v < 0 ? 0 : v, hsv.v);
             hsv.h = 85;
@@ -230,19 +325,19 @@ static HSV BAND_SAT_hella_dr_reverse_math(HSV hsv, uint8_t i, uint8_t time)
     extern bool g_isEffectDR;
     int16_t v = hsv.v - abs(scale8(g_led_config.point[i].x, 228) + 28 - time) * 8;
  
-    /* When value is 0, then override from black to desired backgroun color */
+    // When value is 0, then override from black to desired backgroun color
     if (v <= 0)
     {
         if (g_isEffectDR == false)
         {
-            /* When algorithm would normally set up black (v == 0), let's go back to HSV_YELLOW */
+            // When algorithm would normally set up black (v == 0), let's go back to HSV_YELLOW
             hsv.s = 255;
             hsv.v = 255;
             hsv.h = 43;
         }
         else
         {
-            /* When algorithm would normally set up black (v == 0), let's go back to HSV_GREEN */
+            // When algorithm would normally set up black (v == 0), let's go back to HSV_GREEN
             hsv.s = 255;
             hsv.v = 255;
             hsv.h = 85;
@@ -250,7 +345,7 @@ static HSV BAND_SAT_hella_dr_reverse_math(HSV hsv, uint8_t i, uint8_t time)
     }
     else 
     {
-        /* Gradient of Blue (HSV_BLUE) when it isn't green (HSV_YELLOW) */
+        // Gradient of Blue (HSV_BLUE) when it isn't green (HSV_YELLOW)
         hsv.s = 255;
         hsv.v = scale8(v < 0 ? 0 : v, hsv.v);
         hsv.h = 170;
