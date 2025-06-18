@@ -1,7 +1,7 @@
 # DROP CTRL Keyboard RallyRabbit Driver
 
 This is the keymap and other items tied to the RallyRabbit customizations for the Massdrop CTRL
-
+https://github.com/rallyrabbit/qmk_ctrl_rallyrabbit_working/blob/trunk/keymaps/rallyrabbit/readme.md
 ## Main Features
 
 I really like the Drop CTRL keyboard, but I really dislike the Drop CTRL driver for it and feel like Drop really strayed from the benefits of QMK.  My goal was to take the Drop CTRL driver and make it much more standard to QMK.  My features include.
