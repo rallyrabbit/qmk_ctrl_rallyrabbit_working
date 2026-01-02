@@ -16,14 +16,18 @@
 #define USE_WINDOWS_ALT_CODES
 #define USE_MACOS_ALT_CODES
 
+// RGB Timeout feature
+#define RALLYRABBIT_FEATURE_RGB_TIMEOUT
+
 // Caps Word Enable
 // Enable with Double Tap Shift or Press Both Shifts
 // Invert characters when shift pressed
-// Auto Turn Off after 5 Seconds
-#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+// Auto Turn Off after 3 Seconds
+// NOTE: I prefer this method, but as of QMK Dec 2025, this does not work no matter what I tried, will revisit later.
+//#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define CAPS_WORD_INVERT_ON_SHIFT
-#define CAPS_WORD_IDLE_TIMEOUT 5000
+#define CAPS_WORD_IDLE_TIMEOUT 3000
 
 // RGB functions (Defaults)
 #define RGB_MATRIX_FRAMEBUFFER_EFFECTS
