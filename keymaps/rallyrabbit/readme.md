@@ -107,6 +107,7 @@ Follow the QMK directions isntalling QMK MSYS.
 
 ### "Function" Layer
 
-![Image](https://i.imgur.com/KCZKmJT.png)
+![Image](https://i.imgur.com/n0feBPl.png)
+
 
 
