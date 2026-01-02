@@ -34,7 +34,7 @@ Features that are complete:
 * Special characters work as Windows unicode, Windows Alt-Code, and Mac Special Sequence output
 * Full RGB controls (see layout)
 * Num Lock on the FN-` key
-* Caps Word with Shift Double Tap, or Left/Right Shift at same time. Times out in 5 Seconds.
+* Caps Word with Left/Right Shift at same time. Times out in 3 Seconds.
 * Re-do of digital raindrops to be more like the Matrix.
 
 ## Things Incomplete
@@ -42,7 +42,6 @@ Features that are complete:
 Items that I still want to add to the driver:
 * Special LED sequence when caps lock is pressed on caps lock key
 * Special LED sequence when scroll lock is pressed on scroll lock key
-* Figuring out why LED on Z key is not the correct color
 
 ## RGB Matrix Effects Included
 
