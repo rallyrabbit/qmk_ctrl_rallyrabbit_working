@@ -27,7 +27,7 @@ Features that are complete:
 * Added Audio controls and sound mute to FN hotkeys
 * Added Sound volume to FN-Page Up and FN-Page Down
 * Added Boot Loader hotkey as FN-F1
-* Added FN-ESC for Windows and Mac sleep modes
+* Added updated FN-ESC Mac sleep key (OS 26 broke the old method)
 * Added Spanish accent letters to FN-A, FN-E, FN-I, FN-O, FN-U (Á, É, Í, Ó, Ú)
 * Added Spanish N with Tilda to FN-N
 * Added British/Nordic AE to FN-S (Æ)
@@ -35,6 +35,7 @@ Features that are complete:
 * Full RGB controls (see layout)
 * Num Lock on the FN-` key
 * Caps Word with Shift Double Tap, or Left/Right Shift at same time. Times out in 5 Seconds.
+* Re-do of digital raindrops to be more like the Matrix.
 
 ## Things Incomplete
 
@@ -42,7 +43,6 @@ Items that I still want to add to the driver:
 * Special LED sequence when caps lock is pressed on caps lock key
 * Special LED sequence when scroll lock is pressed on scroll lock key
 * Figuring out why LED on Z key is not the correct color
-* Matrix RGB Effect
 
 ## RGB Matrix Effects Included
 

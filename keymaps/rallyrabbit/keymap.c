@@ -24,12 +24,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LALT, KC_LGUI,                      KC_SPC,                             KC_RGUI, SC_FUNC, KC_LALT, KC_RCTL,                    KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_FUNCTION] = LAYOUT(
-        KC_SLEEP, MD_BOOT, _______,    EE_CLR,  _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, _______, _______,
+        _______,  MD_BOOT, _______,    EE_CLR,  _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, KC_SLEEP, _______,
         KC_NUM,   KC_KP_1, KC_KP_2,    KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, KC_KP_MINUS, KC_KP_PLUS, _______,    _______, KC_BRIU, KC_VOLU,
         _______,  _______, KC_WIN,     KC_E_AC, _______, _______, _______, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,           _______, KC_BRID, KC_VOLD,
         _______,  KC_A_AC, KC_AE_C,    RGB_SPI, RGB_VAI, RGB_SAI, _______, _______, _______, _______, _______, _______, KC_ENT,
         KC_LSFT,  RGB_TOG, RGB_TO_TOG, RGB_SPD, RGB_VAD, RGB_SAD, KC_NT_C, KC_MAC,  _______, _______, _______, KC_RSFT,                                       RGB_HUI,
-        _______,  _______, _______,                   _______,                            _______, _______, _______, _______,                    RGB_RMOD, RGB_HUD, RGB_MOD
+        _______,  _______, _______,                   _______,                            _______, _______, _______, _______,                       RGB_RMOD, RGB_HUD, RGB_MOD
     ),
 };
 
@@ -40,12 +40,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [_FUNCTION] = {
-        YELLOW,   RED,     _______,    RED,     _______, _______, _______, _______, _______, YELLOW, YELLOW, YELLOW, YELLOW,                        YELLOW,  _______, _______,
+        _______,   RED,     _______,    RED,     _______, _______, _______, _______, _______, YELLOW, YELLOW, YELLOW, YELLOW,                        YELLOW,  YELLOW, _______,
         BLUE,     BLUE,    BLUE,       BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,   _______,            _______, YELLOW,  YELLOW,
         _______,  _______, YELLOW,     GREEN,   _______, _______, _______, GREEN,   GREEN,   GREEN,   _______, ORANGE,  ORANGE, _______,            _______, YELLOW,  YELLOW,
-        _______,  GREEN,   GREEN,      PINK,    PINK,    PINK,    _______, _______, _______, _______, _______, _______, _______,
-        GREEN,    PURPLE,  PURPLE,     PINK,    PINK,    PINK,     GREEN,   YELLOW,  _______, _______, _______, GREEN,                                       PINK,
-        _______,  _______, _______,                   _______,                            _______, _______, _______, _______,                    PINK,    PINK,    PINK
+        _______,  GREEN,   GREEN,      CYAN,    CYAN,    CYAN,    _______, _______, _______, _______, _______, _______, _______,
+        GREEN,    PURPLE,  PURPLE,     CYAN,    CYAN,    CYAN,     GREEN,   YELLOW,  _______, _______, _______, GREEN,                                       CYAN,
+        _______,  _______, _______,                   _______,                            _______, _______, _______, _______,                       CYAN,    CYAN,    CYAN
     },
 };
 
@@ -60,7 +60,6 @@ extern rgb_config_t rgb_matrix_config;
 static uint16_t idleTimer;
 static uint16_t idleCounterSeconds;
 static uint8_t keyEventCounter;
-static uint16_t rgbTimeoutSeconds;
 
 // Caps and Num Lock State
 static bool g_bOsNumLockOn = false;
@@ -87,13 +86,10 @@ void matrix_init_user(void)
     // Counter of Key Events Pressed
     keyEventCounter = 0;
 
-    // RGB timeout initialized
-    rgbTimeoutSeconds = DEFAULT_RGB_TIMEOUT_SECONDS;
-
     // RGB Timeout enable/disable
     rgbTimeoutEnabled = true;
 
-    // RGB enable/disable
+    // RGB enable/disable (goes with RGB Timeout when RGB is On/Off from Timeout)
     rgbEnabled = true;
 
     // RGB Matrix state (to go back to after idle)
@@ -122,7 +118,7 @@ void matrix_scan_user(void)
             idleTimer = timer_read();
         }
 
-        if (idleCounterSeconds >= rgbTimeoutSeconds) {
+        if (idleCounterSeconds >= DEFAULT_RGB_TIMEOUT_SECONDS) {
             rgbTimeoutSaveMatrixFlags = rgb_matrix_get_flags();
             rgb_matrix_set_flags(LED_FLAG_NONE);
             rgb_matrix_disable_noeeprom();
@@ -556,7 +552,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
                     }
                     else
                     {
-		    		    send_windows_altcode_sequence(235, sShiftMask, record);
+		    		    send_windows_altcode_sequence(233, sShiftMask, record);
                     }
 #endif
                 }
@@ -808,7 +804,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
 
                     default:
                     {
-                        rgbTimeoutEnabled = false;
                         rgb_matrix_set_flags(LED_FLAG_ALL);
                         rgb_matrix_enable_noeeprom();
                     }
@@ -842,12 +837,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             return false;
 
         case KC_SLEEP:
-            /* If not set to Mac Mode, then ignore the sleep button */
+            // If not set to Mac Mode, then ignore the sleep button
             if (bIsWindowsKeyboard == false)
             {
+                // MACOS
                 if (record->event.pressed)
                 {
-                    /* Command + ALT + EJECT was sporatic, used this insyead */
+                    // Command + ALT + EJECT was sporatic - stopped working in v24
+                    // tap_code16(LCTL(LGUI(KC_Q))); stopped working in v26
+                    // Control + Option + Command + Power 
+                    //tap_code16(LCTL(LALT(LGUI(KC_PWR))));
                     tap_code16(LCTL(LGUI(KC_Q)));
                     sIsMacAsleep = true;
                     rgb_matrix_set_flags(LED_FLAG_NONE);
@@ -857,6 +856,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
                 {
                     tap_code(KC_ESCAPE);
                 }    
+            }
+            else
+            {
+                // WINDOWS
+                // NEEDS work
+                tap_code(KC_SYSTEM_SLEEP);
             }
             return false;
 
