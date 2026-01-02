@@ -24,7 +24,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LALT, KC_LGUI,                      KC_SPC,                             KC_RGUI, SC_FUNC, KC_LALT, KC_RCTL,                    KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_FUNCTION] = LAYOUT(
-        _______,  MD_BOOT, _______,    EE_CLR,  _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, KC_SLEEP, _______,
+        _______,  MD_BOOT, _______,    EE_CLR,  _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, _______, KC_SLEEP,
         KC_NUM,   KC_KP_1, KC_KP_2,    KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, KC_KP_MINUS, KC_KP_PLUS, _______,    _______, KC_BRIU, KC_VOLU,
         _______,  _______, KC_WIN,     KC_E_AC, _______, _______, _______, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,           _______, KC_BRID, KC_VOLD,
         _______,  KC_A_AC, KC_AE_C,    RGB_SPI, RGB_VAI, RGB_SAI, _______, _______, _______, _______, _______, _______, KC_ENT,
@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
     [_FUNCTION] = {
-        _______,   RED,     _______,    RED,     _______, _______, _______, _______, _______, YELLOW, YELLOW, YELLOW, YELLOW,                        YELLOW,  YELLOW, _______,
+        _______,   RED,     _______,    RED,     _______, _______, _______, _______, _______, YELLOW, YELLOW, YELLOW, YELLOW,                        YELLOW, _______,   PINK,
         BLUE,     BLUE,    BLUE,       BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,    BLUE,   _______,            _______, YELLOW,  YELLOW,
         _______,  _______, YELLOW,     GREEN,   _______, _______, _______, GREEN,   GREEN,   GREEN,   _______, ORANGE,  ORANGE, _______,            _______, YELLOW,  YELLOW,
         _______,  GREEN,   GREEN,      CYAN,    CYAN,    CYAN,    _______, _______, _______, _______, _______, _______, _______,
@@ -56,10 +56,15 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 extern keymap_config_t keymap_config;
 extern rgb_config_t rgb_matrix_config;
 
-// idleTimer = LED Timeout Timer; idleCounterSeconds=Counter in Seconds; keyEventCounter = key event counter
-static uint16_t idleTimer;
+// rgbIdleTimer = LED Timeout Timer; idleCounterSeconds=Counter in Seconds; keypressEventCounter = key event counter
+#ifdef RALLYRABBIT_FEATURE_RGB_TIMEOUT
+static uint16_t rgbIdleTimer;
 static uint16_t idleCounterSeconds;
-static uint8_t keyEventCounter;
+static uint8_t keypressEventCounter;
+bool rgbEnabled;
+bool rgbTimeoutEnabled;
+led_flags_t rgbTimeoutSaveMatrixFlags;
+#endif
 
 // Caps and Num Lock State
 static bool g_bOsNumLockOn = false;
@@ -70,9 +75,6 @@ bool g_isEffectDR = false;
 
 // RGB control flags for the driver
 bool disable_layer_color;
-bool rgbEnabled;
-bool rgbTimeoutEnabled;
-led_flags_t rgbTimeoutSaveMatrixFlags;
 
 // Runs one time at keyboard initialization
 void matrix_init_user(void)
@@ -80,20 +82,23 @@ void matrix_init_user(void)
     // Initialize for the Windows Unicode Set for Special Characters by default
     set_unicode_input_mode(UNICODE_MODE_WINDOWS);
 
-    // Counter in seconds: keyboard idle (no key pressed)
+#ifdef RALLYRABBIT_FEATURE_RGB_TIMEOUT
+    // Counter in seconds: keyboard idle (no key pressed) for RGB Timeout
     idleCounterSeconds = 0;
 
-    // Counter of Key Events Pressed
-    keyEventCounter = 0;
+    // Counter of Key Events Pressed  for RGB Timeout
+    keypressEventCounter = 0;
 
     // RGB Timeout enable/disable
     rgbTimeoutEnabled = true;
 
+    // RGB enable/disable
     // RGB enable/disable (goes with RGB Timeout when RGB is On/Off from Timeout)
     rgbEnabled = true;
 
     // RGB Matrix state (to go back to after idle)
     rgbTimeoutSaveMatrixFlags = rgb_matrix_get_flags();
+#endif
 };
 
 // Called after initialization
@@ -105,17 +110,19 @@ void keyboard_post_init_user(void)
 // Called from the driver run loop constantly
 void matrix_scan_user(void)
 {
+#ifdef RALLYRABBIT_FEATURE_RGB_TIMEOUT
+    // RGB TImeout (Turn off RGB on idle)
     if ((rgbTimeoutEnabled == true) && (rgbEnabled == true))
     {
         // As long as a key is pressed (>0) then a key is pressed so do not increemnt timer
-        if (keyEventCounter > 0)
+        if (keypressEventCounter > 0)
         {
             idleCounterSeconds = 0;
         }
-        else if (timer_elapsed(idleTimer) > MS_TO_SECONDS)
+        else if (timer_elapsed(rgbIdleTimer) > MS_TO_SECONDS)
         {
             idleCounterSeconds++;
-            idleTimer = timer_read();
+            rgbIdleTimer = timer_read();
         }
 
         if (idleCounterSeconds >= DEFAULT_RGB_TIMEOUT_SECONDS) {
@@ -126,6 +133,7 @@ void matrix_scan_user(void)
             idleCounterSeconds = 0;
         }
     }
+#endif
 }
 
 // Used to save the Num & Caps Lock state from the LED
@@ -390,7 +398,21 @@ bool rgb_matrix_indicators_user(void)
     }
 
     set_layer_color(get_highest_layer(layer_state));
+/*
+    // CAPS LOCK - LED override to white
+    if (host_keyboard_led_state().caps_lock)
+    {
+        // Replace LED 30 with the LED index for your Caps Lock key
+        rgb_matrix_set_color(30, 255, 255, 255);
+    }
 
+    // Scroll Lock - LED override to white
+    if (host_keyboard_led_state().scroll_lock)
+    {
+        // Replace 31 with the LED index for your Caps Lock key
+        rgb_matrix_set_color(31, 255, 255, 255);
+    }
+*/
     return false;
 }
 
@@ -416,30 +438,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         }    
     }
 
-//adamo - special handling for sleep mode
-
+    // Specal Handling for RGB Sleep Mode
+    //
+    // Not only go to sleep when no activity, but keep track of keypress vs release and do not sleep if key pressed continously
     // Increment counter of key events when key is pressed, decrement when released
     if (record->event.pressed)
     {
-        keyEventCounter++;
+#ifdef RALLYRABBIT_FEATURE_RGB_TIMEOUT
+        // Key pressed, increment coutner
+        keypressEventCounter++;
+
+        if (rgbTimeoutEnabled == true)
+        {
+            rgbIdleTimer = timer_read();
+
+            // Key press clears the counters and re-enables the last used RGB mode
+            idleCounterSeconds = 0;
+            if (rgbEnabled == false)
+            {
+                rgb_matrix_enable_noeeprom();
+                rgb_matrix_set_flags(rgbTimeoutSaveMatrixFlags);
+                rgbEnabled = true;
+            }
+        }
+#endif
     }
     else
     {
-        keyEventCounter--;
-    }
-
-    if (rgbTimeoutEnabled == true)
-    {
-        idleTimer = timer_read();
-
-        // Key press clears the counters and re-enables the last used RGB mode
-        idleCounterSeconds = 0;
-        if (rgbEnabled == false)
-        {
-            rgb_matrix_enable_noeeprom();
-            rgb_matrix_set_flags(rgbTimeoutSaveMatrixFlags);
-            rgbEnabled = true;
-        }
+#ifdef RALLYRABBIT_FEATURE_RGB_TIMEOUT
+        keypressEventCounter--;
+#endif
     }
 
     /* Main Key Code Handling for this keymap */
@@ -813,6 +841,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             return false;
 
         case RGB_TO_TOG:
+#ifdef RALLYRABBIT_FEATURE_RGB_TIMEOUT
             // Turns teh RGB timeout option on or off based on default timeout
             if (rgbTimeoutEnabled == true)
             {
@@ -823,6 +852,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
                 rgbTimeoutEnabled = true;
             }
             return false;
+#else
+            return true;
+#endif
         
         case KC_MAC:
             bIsWindowsKeyboard = false;
