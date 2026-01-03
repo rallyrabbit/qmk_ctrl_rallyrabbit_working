@@ -76,6 +76,9 @@ bool g_isEffectDR = false;
 // RGB control flags for the driver
 bool disable_layer_color;
 
+// Used to managed layerstate changes
+static layer_state_t prev_layer_state;
+
 // Runs one time at keyboard initialization
 void matrix_init_user(void)
 {
@@ -358,6 +361,35 @@ void send_windows_altcode_sequence(uint16_t altCode, uint8_t shiftMask, keyrecor
 }
 #endif
 
+//
+// Standard hook function for QMK
+// Called on every layer change
+//
+layer_state_t layer_state_set_user(layer_state_t state)
+{
+    uint8_t old_layer = get_highest_layer(prev_layer_state);
+    uint8_t new_layer = get_highest_layer(state);
+
+#ifdef RGB_MATRIX_ENABLE
+    if (old_layer != new_layer)
+    {
+        // Set all RGB to off on true layer state change
+        // Clear RGB from layer on every layer change
+        for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++)
+        {
+            // Clear RGB before every layer change
+            rgb_matrix_set_color(i, 0, 0, 0);
+        }
+    }
+#endif
+
+    prev_layer_state = state;
+    return state;
+}
+
+//
+// Helper function used to set layer colors for custom key layers (function layer)
+//
 void set_layer_color(int layer)
 {
     if ((layer == _WINDOWS) || (layer == _MACOS))
@@ -365,6 +397,7 @@ void set_layer_color(int layer)
         return;
     }
 
+#ifdef RGB_MATRIX_ENABLE
     // Go through the Drop CTRL Maxtrix Count for every LED
     for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++)
     {
@@ -381,13 +414,14 @@ void set_layer_color(int layer)
             float f = (float) rgb_matrix_config.hsv.v / UINT8_MAX;
             rgb_matrix_set_color(i, f * rgb.r, f * rgb.g, f * rgb.b);
         }
-        else if (layer != 1)
+        else
         {
             // Only deactivate non-defined key LEDs at layers other than FN. Because at FN we have RGB adjustments and need to see them live.
             // If the values are all false then it's a transparent key and deactivate LED at this layer
             rgb_matrix_set_color(i, 0, 0, 0);
         }
     }
+#endif
 }
 
 bool rgb_matrix_indicators_user(void)
