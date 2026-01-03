@@ -5,7 +5,6 @@
 
 #include "keymap.h"
 
-//KC_F1
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_WINDOWS] = LAYOUT(
         KC_ESC,   KC_F1,   KC_F2,      KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,                     KC_PSCR, KC_SCRL, KC_PAUS,
@@ -24,7 +23,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LCTL,  KC_LALT, KC_LGUI,                      KC_SPC,                             KC_RGUI, SC_FUNC, KC_LALT, KC_RCTL,                    KC_LEFT, KC_DOWN, KC_RGHT
     ),
     [_FUNCTION] = LAYOUT(
-        _______,  MD_BOOT, _______,    EE_CLR,  _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, _______, KC_SLEEP,
+        _______,  MD_BOOT, _______,    EE_CLR,  _______, _______, _______, _______, _______, KC_MPLY,KC_MSTP, KC_MPRV, KC_MNXT,                     KC_MUTE, _______, KC_RLOCK,
         KC_NUM,   KC_KP_1, KC_KP_2,    KC_KP_3, KC_KP_4, KC_KP_5, KC_KP_6, KC_KP_7, KC_KP_8, KC_KP_9, KC_KP_0, KC_KP_MINUS, KC_KP_PLUS, _______,    _______, KC_BRIU, KC_VOLU,
         _______,  _______, KC_WIN,     KC_E_AC, _______, _______, _______, KC_U_AC, KC_I_AC, KC_O_AC, _______,U_T_AUTO,U_T_AGCR, _______,           _______, KC_BRID, KC_VOLD,
         _______,  KC_A_AC, KC_AE_C,    RGB_SPI, RGB_VAI, RGB_SAI, _______, _______, _______, _______, _______, _______, KC_ENT,
@@ -453,24 +452,12 @@ bool rgb_matrix_indicators_user(void)
 bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
     static uint32_t sKeyTimer;
-    static bool sIsMacAsleep = false;
 #if defined(USE_WINDOWS_ALT_CODES) || defined(USE_MACOS_ALT_CODES) || defined(USE_UNICODE_ALT_LETTERS)
 	static uint8_t sShiftMask;
     sShiftMask = MODS_SHIFT;
 #endif
     /* Default to WIndows now */
     static bool bIsWindowsKeyboard = true;
-
-    /* If in Mac Mode, special handling for sleep mode and wakeup */
-    if (bIsWindowsKeyboard == false)
-    {
-        if (sIsMacAsleep && record->event.pressed)
-        {
-            sIsMacAsleep = false;
-            rgb_matrix_set_flags(LED_FLAG_ALL);
-            rgb_matrix_enable_noeeprom();
-        }    
-    }
 
     // Specal Handling for RGB Sleep Mode
     //
@@ -902,32 +889,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             set_single_persistent_default_layer(_WINDOWS);
             return false;
 
-        case KC_SLEEP:
+        case KC_RLOCK:
             // If not set to Mac Mode, then ignore the sleep button
             if (bIsWindowsKeyboard == false)
             {
                 // MACOS
                 if (record->event.pressed)
                 {
-                    // Command + ALT + EJECT was sporatic - stopped working in v24
-                    // tap_code16(LCTL(LGUI(KC_Q))); stopped working in v26
-                    // Control + Option + Command + Power 
-                    //tap_code16(LCTL(LALT(LGUI(KC_PWR))));
+                    // Ctrl-Cmd-Q
                     tap_code16(LCTL(LGUI(KC_Q)));
-                    sIsMacAsleep = true;
-                    rgb_matrix_set_flags(LED_FLAG_NONE);
-                    rgb_matrix_disable_noeeprom();
                 }
-                else if (IS_RELEASED(record->event))
-                {
-                    tap_code(KC_ESCAPE);
-                }    
             }
             else
             {
-                // WINDOWS
-                // NEEDS work
-                tap_code(KC_SYSTEM_SLEEP);
+                // WINDOWS - Lock
+                if (record->event.pressed)
+                {
+                    // WIN + L
+                    tap_code16(LGUI(KC_L));
+                }
             }
             return false;
 
