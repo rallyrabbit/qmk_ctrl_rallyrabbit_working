@@ -16,9 +16,6 @@
 #define USE_WINDOWS_ALT_CODES
 #define USE_MACOS_ALT_CODES
 
-// RGB Timeout feature
-#define RALLYRABBIT_FEATURE_RGB_TIMEOUT
-
 // Caps Word Enable
 // Enable with Double Tap Shift or Press Both Shifts
 // Invert characters when shift pressed
@@ -35,6 +32,10 @@
 #define RGB_MATRIX_KEYPRESSES
 #define RGB_MATRIX_LED_PROCESS_LIMIT 15
 #define RGB_MATRIX_LED_FLUSH_LIMIT 10
+
+// Debug output for Keycodes
+// CONSOLE_ENABLE needs to be yes to do this
+//#ifdef RALLYRABBIT_DEBUG_KEYCODES
 
 // RGB Matrix Animation modes. Explicitly enabled
 // For full list of effects, see:
