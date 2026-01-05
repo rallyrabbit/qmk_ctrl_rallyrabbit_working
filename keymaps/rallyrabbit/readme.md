@@ -27,7 +27,7 @@ Features that are complete:
 * Added Audio controls and sound mute to FN hotkeys
 * Added Sound volume to FN-Page Up and FN-Page Down
 * Added Boot Loader hotkey as FN-F1
-* Added updated FN-PAUSE to be quick lock for Windows and Mac
+* Added updated FN-ESC Mac sleep key (OS 26 broke the old method)
 * Added Spanish accent letters to FN-A, FN-E, FN-I, FN-O, FN-U (Á, É, Í, Ó, Ú)
 * Added Spanish N with Tilda to FN-N
 * Added British/Nordic AE to FN-S (Æ)
@@ -106,7 +106,7 @@ Follow the QMK directions isntalling QMK MSYS.
 
 ### "Function" Layer
 
-![Image](https://i.imgur.com/KFqwnoy.png)
+![Image](https://i.imgur.com/n0feBPl.png)
 
 
 

@@ -127,9 +127,10 @@ void matrix_scan_user(void)
             rgbIdleTimer = timer_read();
         }
 
-        if (idleCounterSeconds >= DEFAULT_RGB_TIMEOUT_SECONDS) {
+        if (idleCounterSeconds >= DEFAULT_RGB_TIMEOUT_SECONDS)
+        {
             rgbTimeoutSaveMatrixFlags = rgb_matrix_get_flags();
-            rgb_matrix_set_flags(LED_FLAG_NONE);
+            rgb_matrix_set_flags_noeeprom(LED_FLAG_NONE);
             rgb_matrix_disable_noeeprom();
             rgbEnabled = false;
             idleCounterSeconds = 0;
@@ -478,7 +479,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             if (rgbEnabled == false)
             {
                 rgb_matrix_enable_noeeprom();
-                rgb_matrix_set_flags(rgbTimeoutSaveMatrixFlags);
+                rgb_matrix_set_flags_noeeprom(rgbTimeoutSaveMatrixFlags);
                 rgbEnabled = true;
             }
         }
@@ -831,32 +832,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
                 switch (rgb_matrix_get_flags())
                 {
                     case LED_FLAG_ALL:
-                    {
                         rgb_matrix_set_flags(LED_FLAG_KEYLIGHT | LED_FLAG_MODIFIER | LED_FLAG_INDICATOR);
                         rgb_matrix_set_color_all(0, 0, 0);
-                    }
-                    break;
+                        break;
 
                     case (LED_FLAG_KEYLIGHT | LED_FLAG_MODIFIER | LED_FLAG_INDICATOR):
-                    {
                         rgb_matrix_set_flags(LED_FLAG_UNDERGLOW);
                         rgb_matrix_set_color_all(0, 0, 0);
-                    }
-                    break;
+                        break;
 
                     case LED_FLAG_UNDERGLOW:
-                    {
                         rgb_matrix_set_flags(LED_FLAG_NONE);
-                        rgb_matrix_disable_noeeprom();
-                    }
-                    break;
+                        rgb_matrix_disable();
+                        break;
 
                     default:
-                    {
                         rgb_matrix_set_flags(LED_FLAG_ALL);
-                        rgb_matrix_enable_noeeprom();
-                    }
-                    break;
+                        rgb_matrix_enable();
+                        break;
                 }
             }
             return false;

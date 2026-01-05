@@ -65,5 +65,5 @@ enum ctrl_keycodes {
 #define MS_TO_SECONDS 1000
 
 // RGB Timeout (1800 seconds = 30 minutes)
-#define DEFAULT_RGB_TIMEOUT_SECONDS 1800
+#define DEFAULT_RGB_TIMEOUT_SECONDS 300 // 1800
 
